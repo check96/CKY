@@ -1,0 +1,57 @@
+##############
+#GRAMMAR RULES
+##############
+
+#frasi
+S -> NP VP
+
+#sintagma nominale
+NP -> Nom
+NP -> DET Nom
+NP -> DET Nom ADJ
+NP -> DET ADJ Nom
+NP -> ADJ Nom
+
+#nominali
+Nom -> PropN
+Nom -> Pron
+Nom -> N
+Nom -> N Nom
+Nom -> Nom PP
+
+#sintagma verbale
+VP -> V
+VP -> V NP
+VP -> V NP ADV
+VP -> V PART
+VP -> V PP
+VP -> VP PP
+
+#sintagma preposizionale
+PP -> P NP
+
+##############
+#LEXICAL RULES
+##############
+ADJ -> novecento
+
+ADV -> lì
+
+N -> anni
+N -> amici
+N -> età
+
+P -> di
+
+PART -> illuminati
+
+Pron -> noi
+Pron -> tu
+
+V -> avrai
+V -> hai
+V -> siamo
+
+
+
+
