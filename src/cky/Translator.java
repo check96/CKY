@@ -18,9 +18,7 @@ public class Translator {
 	
 	public void parserGrammarWithSem() {
 		try {
-			Scanner scanner = new Scanner(
-					new File(
-							"C:\\Users\\Gaetano\\Desktop\\workspace\\CKY\\assets\\grammars.txt"));
+			Scanner scanner = new Scanner(new File("assets\\grammars.txt"));
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine().replace("\r", "");
 
@@ -59,9 +57,7 @@ public class Translator {
 	}
 	public void parserGrammar() {
 		try {
-			Scanner scanner = new Scanner(
-					new File(
-							"C:\\Users\\Gaetano\\Desktop\\workspace\\CKY\\assets\\GrammaticaItaliana.txt"));
+			Scanner scanner = new Scanner(new File("assets\\GrammaticaItaliana.txt"));
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine().replace("\r", "");
 
@@ -91,11 +87,11 @@ public class Translator {
 			e.printStackTrace();
 		}
 
-//		for (String key : grammar.keySet()) {
-//			System.out.println(key);
-//			for (String string : grammar.get(key))
-//				System.out.println("  " + string);
-//		}
+		for (String key : grammar.keySet()) {
+			System.out.println(key);
+			for (String string : grammar.get(key))
+				System.out.println("  " + string);
+		}
 
 	}
 
