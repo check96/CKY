@@ -4,22 +4,17 @@
 
 #frasi
 S -> NP VP
-S -> Pron VP
-S -> PropN VP
+S -> PART VP
+S -> N VP
 
 #sintagma nominale
-NP -> N ADV
-NP -> DET N
-NP -> N ADJ
-NP -> ADJ N
+NP -> NP PP
 NP -> ADJ N
 
+
 #sintagma verbale
-VP -> V
-VP -> V NP
-VP -> V PART
-VP -> V PP
-VP -> VP PP
+VP -> Pron V
+VP -> VP ADV
 
 #sintagma preposizionale
 PP -> P N
@@ -40,12 +35,8 @@ P -> di
 PART -> illuminati
 
 Pron -> noi
-Pron -> tu
+Pr -> tu
 
 V -> avrai
 V -> hai
 V -> siamo
-
-
-
-
