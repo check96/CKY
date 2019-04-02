@@ -10,13 +10,14 @@ S -> PropN VP
 #sintagma nominale
 NP -> N ADV
 NP -> DET N
+NP -> DET NP
 NP -> N ADJ
-NP -> ADJ N
 NP -> ADJ N
 
 #sintagma verbale
-VP -> V
 VP -> V NP
+VP -> VP PART
+VP -> VP ADV
 VP -> V PART
 VP -> V PP
 VP -> VP PP
@@ -28,24 +29,53 @@ PP -> P N
 #LEXICAL RULES
 ##############
 ADJ -> novecento
+ADJ -> mio
+ADJ -> mia
+ADJ -> mie
+ADJ -> miei
 
 ADV -> lì
+
+DET -> la
+DET -> il
+DET -> lo
+DET -> i
+DET -> gli
+DET -> le
+DET -> uno
+DET -> una
+DET -> un
 
 N -> anni
 N -> amici
 N -> età
 
 P -> di
+P -> a
+P -> da
+P -> in
+P -> con
+P -> su
+P -> per
+P -> tra
+P -> fra
+
 
 PART -> illuminati
+PART -> illuminato
+PART -> illuminata
+PART -> illuminate
 
-Pron -> noi
+Pron -> io
 Pron -> tu
+Pron -> egli
+Pron -> noi
+Pron -> voi
+Pron -> essi
+Pron -> esse
 
 V -> avrai
 V -> hai
 V -> siamo
-
-
-
-
+V -> sarai
+V -> sei

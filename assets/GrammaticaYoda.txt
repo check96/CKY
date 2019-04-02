@@ -22,21 +22,57 @@ PP -> P N
 ##############
 #LEXICAL RULES
 ##############
+##############
+#LEXICAL RULES
+##############
 ADJ -> novecento
+ADJ -> mio
+ADJ -> mia
+ADJ -> mie
+ADJ -> miei
 
 ADV -> lì
+
+DET -> la
+DET -> il
+DET -> lo
+DET -> i
+DET -> gli
+DET -> le
+DET -> uno
+DET -> una
+DET -> un
 
 N -> anni
 N -> amici
 N -> età
 
 P -> di
+P -> a
+P -> da
+P -> in
+P -> con
+P -> su
+P -> per
+P -> tra
+P -> fra
+
 
 PART -> illuminati
+PART -> illuminato
+PART -> illuminata
+PART -> illuminate
 
+Pron -> io
+Pron -> tu
+Pron -> egli
 Pron -> noi
-Pr -> tu
+Pron -> voi
+Pron -> essi
+Pron -> esse
 
 V -> avrai
 V -> hai
 V -> siamo
+V -> sarai
+V -> sei

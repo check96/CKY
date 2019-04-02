@@ -99,13 +99,8 @@ public class Translator {
 						rules.add(head + " -> " + table[j][k - 1].getValue()
 								+ " " + table[k][i].getValue());
 					}
-
-					// System.out.println(i + " " + j + " " + k + " " +
-					// table[j][i].getValue() + " " + table[j][k-1].getValue() +
-					// " " + table[k][i].getValue());
 				}
 		}
-
 		if (table[0][words.length - 1].getValue().equals("S")) {
 			List<Tree> leaves = new ArrayList<Tree>(); 
 			for(int i = 0; i<table.length; i++)
@@ -149,7 +144,7 @@ public class Translator {
 	
 	public Tree translate(List<Tree> trees){
 		
-		if(trees.get(0).getValue().equalsIgnoreCase("s"))// && trees.size() <= 1)
+		if(trees.get(0).getValue().equalsIgnoreCase("s"))
 			return trees.get(0);
 		
 		List<Tree> partial = new ArrayList<Tree>();
@@ -217,6 +212,7 @@ public class Translator {
 		// Scanner scanner = new Scanner(System.in);
 
 		// String sentence = scanner.nextLine();
+		System.out.println(translator.algorithm("la mia età è illuminata"));
 		System.out.println(translator.algorithm("tu hai amici lì"));
 		System.out.println(translator.algorithm("noi siamo illuminati"));
 		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
