@@ -149,7 +149,7 @@ public class Translator {
 	
 	public Tree translate(List<Tree> trees){
 		
-		if(trees.get(0).getValue().equalsIgnoreCase("s") && trees.size() <= 1)
+		if(trees.get(0).getValue().equalsIgnoreCase("s"))// && trees.size() <= 1)
 			return trees.get(0);
 		
 		List<Tree> partial = new ArrayList<Tree>();
@@ -158,8 +158,10 @@ public class Translator {
 			Pair<String, Integer> found = findInGrammar(trees.get(i-1).getValue() + " " + trees.get(i).getValue());
 			if(found.getKey().equalsIgnoreCase("s") && !partial.isEmpty())
 			{
-				Collections.reverse(trees);
-				found = findInGrammar(trees.get(i-1).getValue() + " " + trees.get(i).getValue());
+				partial.add(trees.get(i-1));
+				partial.add(trees.get(i));
+				i--;
+				continue;
 			}
 				
 			switch (found.getValue()) {
