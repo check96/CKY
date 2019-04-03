@@ -7,49 +7,28 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-
-import javafx.util.Pair;
 
 public class Translator {
 
 	private Tree[][] table;
-	private Map<String, List<String>> ItalianGrammar = new TreeMap<String, List<String>>();
-	private Map<String, List<String>> YodaGrammar = new TreeMap<String, List<String>>();
-	private Set<String> rules = new TreeSet<String>();
+	private Map<String, String> ItalianGrammar = new TreeMap<String, String>();
+	private Map<String, String> YodaGrammar = new TreeMap<String, String>();
 
 	public void parserGrammar(String path) {
 		try {
-			Map<String, List<String>> grammar = new TreeMap<String, List<String>>();
+			Map<String, String> grammar = new TreeMap<String, String>();
 			Scanner scanner = new Scanner(new File(path));
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine().replace("\r", "");
 
-				if (line.contains("end."))
-					break;
-
 				if (line.contains(" -> ")) {
-					String[] split = line.split(" ->");
-					String head = split[0];
-
-					if (!grammar.containsKey(head))
-						grammar.put(head, new ArrayList<String>());
-
-					String[] list = split[1].split(" ");
-					String rule = "";
-
-					for (String body : list) {
-						// String body = string.split("\\[")[0];
-						if (!body.equals("")) {
-							rule += body + " ";
-						}
-					}
-					grammar.get(head).add(rule.substring(0, rule.length() - 1));
+					String[] split = line.split(" -> ");
+					grammar.put(split[1], split[0]);
 				}
 			}
 			scanner.close();
+			
 			if (path.contains("Yoda"))
 				YodaGrammar.putAll(grammar);
 			else if (path.contains("Italian"))
@@ -60,9 +39,9 @@ public class Translator {
 		}
 
 		// for (String key : grammar.keySet()) {
-		// 		System.out.println(key);
-			// for (String string : grammar.get(key))
-			// 		System.out.println("  " + string);
+		// System.out.println(key);
+		// for (String string : grammar.get(key))
+		// System.out.println("  " + string);
 		// }
 	}
 
@@ -80,117 +59,83 @@ public class Translator {
 
 			List<Tree> word = new ArrayList<Tree>();
 			word.add(new Tree(words[i]));
-			table[i][i] = new Tree(getHead(words[i]), word);
-
-			rules.add(table[i][i].getValue() + " -> " + words[i]);
-
+			table[i][i] = new Tree(ItalianGrammar.get(words[i]),word);
+			
 			for (int j = i - 1; j >= 0; j--)
 				for (int k = j + 1; k <= i; k++) {
-					String head = getHead(table[j][k - 1].getValue() + " "
-							+ table[k][i].getValue());
-
-					if (table[j][i].getValue().equals("-")
-							&& !(head.equals("-"))) {
+					String head = ItalianGrammar.get(table[j][k - 1].getValue()	+ " " + table[k][i].getValue());
+					if (table[j][i].getValue().equals("-") && head != null) {
 						List<Tree> children = new ArrayList<Tree>();
 						children.add(table[j][k - 1]);
 						children.add(table[k][i]);
 						table[j][i] = new Tree(head, children);
-
-						rules.add(head + " -> " + table[j][k - 1].getValue()
-								+ " " + table[k][i].getValue());
 					}
 				}
 		}
-		if (table[0][words.length - 1].getValue().equals("S")) {
-			List<Tree> leaves = new ArrayList<Tree>(); 
-			for(int i = 0; i<table.length; i++)
-				leaves.add(table[i][i]);
+		if (table[0][words.length - 1].getValue().equalsIgnoreCase("S")) {
+			List<Tree> leaves = new ArrayList<Tree>();
 
+			for (int i = 0; i < table.length; i++)
+				leaves.add(table[i][i]);
 			Tree tree = translate(leaves);
-			
 			return tree.findLeaves();
 		}
 		return "";
 	}
 
-	private String getHead(String rule) {
+	public Tree translate(List<Tree> trees) {
 
-		for (String key : ItalianGrammar.keySet()) {
-			List<String> list = ItalianGrammar.get(key);
-			for (int i = 0; i < list.size(); i++)
-				if (list.get(i).equalsIgnoreCase(rule))
-					return key;
-		}
-		return "-";
-	}
-	
-//	0 = non trovato 	1 = trovato nello stesso ordine 	2 = trovato in ordine inverso
-	private Pair<String, Integer> findInGrammar(String rule){
-		
-		for (String key : YodaGrammar.keySet()) {
-			List<String> list = YodaGrammar.get(key);
-			for (int i = 0; i < list.size(); i++)
-			{
-				String[] words = rule.split(" ");
-				if (list.get(i).equalsIgnoreCase(rule))
-					return new Pair<String, Integer>(key, 1);
-				else if(list.get(i).equalsIgnoreCase(words[1] + " " + words[0]))
-					return new Pair<String, Integer>(key, 2);
-			}
-		}
-
-		return new Pair<String, Integer>("", 0);
-	}
-	
-	public Tree translate(List<Tree> trees){
-		
-		if(trees.get(0).getValue().equalsIgnoreCase("s"))
+		if (trees.get(0).getValue().equalsIgnoreCase("s"))
 			return trees.get(0);
-		
+
 		List<Tree> partial = new ArrayList<Tree>();
-		for(int i = trees.size()-1 ; i > 0; i--)
-		{
-			Pair<String, Integer> found = findInGrammar(trees.get(i-1).getValue() + " " + trees.get(i).getValue());
-			if(found.getKey().equalsIgnoreCase("s") && !partial.isEmpty())
-			{
-				partial.add(trees.get(i-1));
-				partial.add(trees.get(i));
-				i--;
-				continue;
-			}
-				
-			switch (found.getValue()) {
-				case 1:
-					List<Tree> children1 = new ArrayList<Tree>();
-					children1.add(trees.get(i-1));
-					children1.add(trees.get(i)); 
-					Tree tree1 = new Tree(found.getKey(),children1);
-					partial.add(tree1);
+		for (int i = trees.size() - 1; i > 0; i--) {
+			try {
+				String head = YodaGrammar.get(trees.get(i-1).getValue() + " "	+ trees.get(i).getValue());
+				if (head.equalsIgnoreCase("s") && !partial.isEmpty()) {
+					partial.add(trees.get(i - 1));
+					partial.add(trees.get(i));
 					i--;
-					break;
-				case 2:
+					continue;
+				}
+
+				List<Tree> children1 = new ArrayList<Tree>();
+				children1.add(trees.get(i - 1));
+				children1.add(trees.get(i));
+				Tree tree1 = new Tree(head, children1);
+				partial.add(tree1);
+				i--;
+			} catch (Exception e) {
+				try {
+					String head = YodaGrammar.get(trees.get(i).getValue() + " "	+ trees.get(i-1).getValue());
+					if (head.equalsIgnoreCase("s") && !partial.isEmpty()) {
+						partial.add(trees.get(i - 1));
+						partial.add(trees.get(i));
+						i--;
+						continue;
+					}
+
+					
 					List<Tree> children2 = new ArrayList<Tree>();
-					children2.add(trees.get(i)); 
-					children2.add(trees.get(i-1));
-					Tree tree2 = new Tree(found.getKey(),children2);
+					children2.add(trees.get(i));
+					children2.add(trees.get(i - 1));
+					Tree tree2 = new Tree(head, children2);
 					partial.add(tree2);
 					i--;
-					break;
-
-			default:
-				partial.add(trees.get(i));
-				break;
+				}
+				catch(Exception e1){
+					partial.add(trees.get(i));
+				}
 			}
-			
-			if(i==1)
+			if (i == 1)
 				partial.add(trees.get(0));
-			
+
 		}
 		Collections.reverse(partial);
 		return translate(partial);
 	}
 
-	public void print() {
+	public void printTable() {
 
 		for (int i = 0; i < table.length; i++) {
 			for (int j = 0; j < table[i].length; j++) {
@@ -198,9 +143,6 @@ public class Translator {
 			}
 			System.out.println();
 		}
-		System.out.println(rules);
-		System.out.println("\n");
-
 	}
 
 	public static void main(String[] args) {
@@ -212,7 +154,8 @@ public class Translator {
 		// Scanner scanner = new Scanner(System.in);
 
 		// String sentence = scanner.nextLine();
-		System.out.println(translator.algorithm("la mia età è illuminata"));
+		
+//		System.out.println(translator.algorithm("la mia età è illuminata"));
 		System.out.println(translator.algorithm("tu hai amici lì"));
 		System.out.println(translator.algorithm("noi siamo illuminati"));
 		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
