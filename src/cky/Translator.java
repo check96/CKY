@@ -1,12 +1,9 @@
 package cky;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.TreeMap;
 
 public class Translator {
@@ -17,8 +14,7 @@ public class Translator {
 
 	public Translator() {
 		yodaGrammar.putAll(Parser.parserGrammar("assets\\GrammaticaYoda.txt"));
-		italianGrammar.putAll(Parser
-				.parserGrammar("assets\\GrammaticaItaliana.txt"));
+		italianGrammar.putAll(Parser.parserGrammar("assets\\GrammaticaItaliana.txt"));
 	}
 
 	public String algorithm(String sentence) {
@@ -90,7 +86,7 @@ public class Translator {
 		Collections.reverse(partial);
 		return translate(partial);
 	}
-
+	
 	public void applyCKY(String[] words) {
 
 		table = new Tree[words.length][words.length];
@@ -132,11 +128,7 @@ public class Translator {
 
 		Translator translator = new Translator();
 
-		// Scanner scanner = new Scanner(System.in);
-
-		// String sentence = scanner.nextLine();
-
-		// System.out.println(translator.algorithm("la mia età è illuminata"));
+// 		System.out.println(translator.algorithm("la mia età è illuminata"));
 		System.out.println(translator.algorithm("tu hai amici lì"));
 		System.out.println(translator.algorithm("noi siamo illuminati"));
 		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
