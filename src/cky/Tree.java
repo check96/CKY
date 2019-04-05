@@ -29,11 +29,11 @@ public class Tree {
 		return children;
 	}
 	
-	public void print(){
-		System.out.println(value);
+	public void print(String space){
+		System.out.println(space + value);
 
 		for (Tree child : children)
-			child.print();
+			child.print("   "+space);
 	}
 	
 	@Override
