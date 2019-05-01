@@ -21,7 +21,7 @@ public class Translator {
 		String[] words = sentence.split(" ");
 		applyCKY(words);
 		
-		if (table[0][words.length - 1].getValue().equalsIgnoreCase("S")) {
+		if(table[0][words.length - 1].getValue().equalsIgnoreCase("S")) {
 			List<Tree> leaves = new ArrayList<Tree>();
 
 			// table[0][words.length - 1].print("");
@@ -39,6 +39,7 @@ public class Translator {
 
 	public Tree translate(List<Tree> trees) {
 
+		System.out.println(trees);
 		if (trees.get(0).getValue().equalsIgnoreCase("s"))
 			return trees.get(0);
 
@@ -47,8 +48,8 @@ public class Translator {
 			try {
 				String head = yodaGrammar.get(trees.get(i - 1).getValue() + " " + trees.get(i).getValue());
 				if (head.equalsIgnoreCase("s") && !partial.isEmpty()) {
-					partial.add(trees.get(i - 1));
 					partial.add(trees.get(i));
+					partial.add(trees.get(i - 1));
 					i--;
 					continue;
 				}
@@ -86,7 +87,7 @@ public class Translator {
 		Collections.reverse(partial);
 		return translate(partial);
 	}
-	
+
 	public void applyCKY(String[] words) {
 
 		table = new Tree[words.length][words.length];
@@ -95,6 +96,7 @@ public class Translator {
 			for (int j = 0; j < words.length; j++)
 				table[i][j] = new Tree();
 
+		// i = righe, j = colonne
 		for (int i = 0; i < words.length; i++) {
 
 			List<Tree> word = new ArrayList<Tree>();
@@ -112,6 +114,8 @@ public class Translator {
 					}
 				}
 		}
+		
+//		printTable();
 	}
 
 	public void printTable() {
@@ -130,8 +134,8 @@ public class Translator {
 
 // 		System.out.println(translator.algorithm("la mia età è illuminata"));
 		System.out.println(translator.algorithm("tu hai amici lì"));
-		System.out.println(translator.algorithm("noi siamo illuminati"));
-		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
+//		System.out.println(translator.algorithm("noi siamo illuminati"));
+//		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
 	}
 
 }

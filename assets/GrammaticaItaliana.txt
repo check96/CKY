@@ -6,6 +6,7 @@
 S -> NP VP
 S -> Pron VP
 S -> PropN VP
+S -> N VP
 
 #sintagma nominale
 NP -> N ADV
@@ -21,6 +22,7 @@ VP -> VP ADV
 VP -> V PART
 VP -> V PP
 VP -> VP PP
+VP -> Pron V
 
 #sintagma preposizionale
 PP -> P N
