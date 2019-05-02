@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 public class Translator {
 
-	private Tree[][] table;
+	private List<List<List<Tree>>> table = new ArrayList<List<List<Tree>>>();
 	private Map<String, String> italianGrammar = new TreeMap<String, String>();
 	private Map<String, String> yodaGrammar = new TreeMap<String, String>();
 
@@ -21,19 +21,20 @@ public class Translator {
 		String[] words = sentence.split(" ");
 		applyCKY(words);
 		
-		if(table[0][words.length - 1].getValue().equalsIgnoreCase("S")) {
-			List<Tree> leaves = new ArrayList<Tree>();
-
-			// table[0][words.length - 1].print("");
-
-			for (int i = 0; i < table.length; i++)
-				leaves.add(table[i][i]);
-
-			Tree tree = translate(leaves);
-			// tree.print("");
-
-			return tree.findLeaves();
-		}
+		for(int n=0; n<table.get(0).get(words.length - 1).size(); n++)
+			if(table.get(0).get(words.length - 1).get(n).getValue().equalsIgnoreCase("S")) {
+				List<Tree> leaves = new ArrayList<Tree>();
+	
+//				 table.get(0).get(words.length - 1).get(0).print("");
+	
+				for (int i = 0; i < table.size(); i++)
+					leaves.add(table.get(i).get(i).get(n));
+	
+				Tree tree = translate(leaves);
+				// tree.print("");
+	
+				return tree.findLeaves();
+			}
 		return "";
 	}
 
@@ -46,6 +47,7 @@ public class Translator {
 		List<Tree> partial = new ArrayList<Tree>();
 		for (int i = trees.size() - 1; i > 0; i--) {
 			try {
+				
 				String head = yodaGrammar.get(trees.get(i - 1).getValue() + " " + trees.get(i).getValue());
 				if (head.equalsIgnoreCase("s") && !partial.isEmpty()) {
 					partial.add(trees.get(i));
@@ -90,28 +92,34 @@ public class Translator {
 
 	public void applyCKY(String[] words) {
 
-		table = new Tree[words.length][words.length];
-
-		for (int i = 0; i < words.length; i++)
-			for (int j = 0; j < words.length; j++)
-				table[i][j] = new Tree();
-
+		for(int i =0; i<words.length; i++){
+			table.add(new ArrayList<List<Tree>>()); 
+			for(int j = 0; j<words.length; j++)
+				table.get(i).add(new ArrayList<Tree>());
+		}
+		
 		// i = righe, j = colonne
 		for (int i = 0; i < words.length; i++) {
 
 			List<Tree> word = new ArrayList<Tree>();
 			word.add(new Tree(words[i]));
-			table[i][i] = new Tree(italianGrammar.get(words[i]), word);
+			
+			table.get(i).get(i).add(new Tree(italianGrammar.get(words[i]), word));
 
 			for (int j = i - 1; j >= 0; j--)
 				for (int k = j + 1; k <= i; k++) {
-					String head = italianGrammar.get(table[j][k - 1].getValue() + " " + table[k][i].getValue());
-					if (table[j][i].getValue().equals("-") && head != null) {
-						List<Tree> children = new ArrayList<Tree>();
-						children.add(table[j][k - 1]);
-						children.add(table[k][i]);
-						table[j][i] = new Tree(head, children);
-					}
+					
+					for(int n=0; n<table.get(j).get(k-1).size(); n++)
+						for(int m=0; m<table.get(k).get(i).size(); m++){
+							String head = italianGrammar.get(table.get(j).get(k-1).get(n).getValue() + " " + table.get(k).get(i).get(m).getValue());
+					
+							if (head != null) {
+								List<Tree> children = new ArrayList<Tree>();
+								children.add(table.get(j).get(k-1).get(n));
+								children.add(table.get(k).get(i).get(m));
+								table.get(j).get(i).add(new Tree(head, children));
+							}
+						}
 				}
 		}
 		
@@ -120,9 +128,9 @@ public class Translator {
 
 	public void printTable() {
 
-		for (int i = 0; i < table.length; i++) {
-			for (int j = 0; j < table[i].length; j++) {
-				System.out.print(table[i][j].getValue() + "    ");
+		for (int i = 0; i < table.size(); i++) {
+			for (int j = 0; j < table.get(i).size(); j++) {
+				System.out.print(table.get(i).get(j).get(0).getValue() + "    ");
 			}
 			System.out.println();
 		}
