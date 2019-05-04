@@ -8,31 +8,29 @@ import java.util.TreeMap;
 
 public class Translator {
 
-	private List<List<List<Tree>>> table = new ArrayList<List<List<Tree>>>();
-	private Map<String, List<Tree>> italianGrammar = new TreeMap<String, List<Tree>>();
+	private List<List<List<Tree>>> table;
+	private Map<String, String> italianGrammar = new TreeMap<String, String>();
 	private Map<String, String> yodaGrammar = new TreeMap<String, String>();
 
 	public Translator() {
-		yodaGrammar.putAll(Parser.parserYodaGrammar());
-		italianGrammar.putAll(Parser.parserItalianGrammar());
+		yodaGrammar.putAll(Parser.parserGrammar("assets\\GrammaticaYoda.txt"));
+		italianGrammar.putAll(Parser.parserGrammar("assets\\GrammaticaItaliana.txt"));
 	}
 
 	public String algorithm(String sentence) {
+		table = new ArrayList<List<List<Tree>>>();
 		String[] words = sentence.split(" ");
 		applyCKY(words);
-		
-		for(int n=0; n<table.get(0).get(words.length - 1).size(); n++)
-			if(table.get(0).get(words.length - 1).get(n).getValue().equalsIgnoreCase("S")) {
+
+		for (int n = 0; n < table.get(0).get(words.length - 1).size(); n++)
+			if (table.get(0).get(words.length - 1).get(n).getValue().equalsIgnoreCase("S")) {
 				List<Tree> leaves = new ArrayList<Tree>();
-	
-//				 table.get(0).get(words.length - 1).get(0).print("");
-	
+
 				for (int i = 0; i < table.size(); i++)
 					leaves.add(table.get(i).get(i).get(n));
-	
+
 				Tree tree = translate(leaves);
-				// tree.print("");
-	
+
 				return tree.findLeaves();
 			}
 		return "";
@@ -40,14 +38,14 @@ public class Translator {
 
 	public Tree translate(List<Tree> trees) {
 
-		System.out.println(trees);
+//		System.out.println(trees);
 		if (trees.get(0).getValue().equalsIgnoreCase("s"))
 			return trees.get(0);
 
 		List<Tree> partial = new ArrayList<Tree>();
 		for (int i = trees.size() - 1; i > 0; i--) {
 			try {
-				
+
 				String head = yodaGrammar.get(trees.get(i - 1).getValue() + " " + trees.get(i).getValue());
 				if (head.equalsIgnoreCase("s") && !partial.isEmpty()) {
 					partial.add(trees.get(i));
@@ -92,35 +90,38 @@ public class Translator {
 
 	public void applyCKY(String[] words) {
 
-		for(int i =0; i<words.length; i++){
-			table.add(new ArrayList<List<Tree>>()); 
-//			for(int j = 0; j<words.length; j++)
-//				table.get(i).add(new ArrayList<Tree>());
+		for (int i = 0; i < words.length; i++) {
+			table.add(new ArrayList<List<Tree>>());
+			for (int j = 0; j < words.length; j++)
+				table.get(i).add(new ArrayList<Tree>());
 		}
-		
+
 		// i = righe, j = colonne
 		for (int i = 0; i < words.length; i++) {
-			
-			table.get(i).add(italianGrammar.get(words[i]));
+
+			List<Tree> word = new ArrayList<Tree>();
+			word.add(new Tree(words[i]));
+
+			table.get(i).get(i).add(new Tree(italianGrammar.get(words[i]), word));
 
 			for (int j = i - 1; j >= 0; j--)
 				for (int k = j + 1; k <= i; k++) {
-					System.out.println(table.get(j).get(k-1));
-//					for(int n=0; n<table.get(j).get(k-1).size(); n++);
-//						for(int m=0; m<table.get(k).get(i).size(); m++){
-//							List<Tree> head = italianGrammar.get(table.get(j).get(k-1).get(n).getValue() + " " + table.get(k).get(i).get(m).getValue());
-					
-//							if (head != null && !head.isEmpty()) {
-//								List<Tree> children = new ArrayList<Tree>();
-//								children.add(table.get(j).get(k-1).get(n));
-//								children.add(table.get(k).get(i).get(m));
-//								table.get(j).add(head);
-//							}
-//						}
+
+					for (int n = 0; n < table.get(j).get(k - 1).size(); n++)
+						for (int m = 0; m < table.get(k).get(i).size(); m++) {
+							String head = italianGrammar.get(table.get(j).get(k - 1).get(n).getValue() + " "
+									+ table.get(k).get(i).get(m).getValue());
+
+							if (head != null) {
+								List<Tree> children = new ArrayList<Tree>();
+								children.add(table.get(j).get(k - 1).get(n));
+								children.add(table.get(k).get(i).get(m));
+								table.get(j).get(i).add(new Tree(head, children));
+							}
+						}
 				}
 		}
-		
-//		printTable();
+
 	}
 
 	public void printTable() {
@@ -137,10 +138,9 @@ public class Translator {
 
 		Translator translator = new Translator();
 
-// 		System.out.println(translator.algorithm("la mia età è illuminata"));
 		System.out.println(translator.algorithm("tu hai amici lì"));
-//		System.out.println(translator.algorithm("noi siamo illuminati"));
-//		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
+		System.out.println(translator.algorithm("noi siamo illuminati"));
+		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
 	}
 
 }
