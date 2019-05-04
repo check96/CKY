@@ -37,6 +37,7 @@ ADJ -> mie
 ADJ -> miei
 
 ADV -> lì
+ADV -> là
 
 DET -> la
 DET -> il
@@ -67,6 +68,8 @@ PART -> illuminati
 PART -> illuminato
 PART -> illuminata
 PART -> illuminate
+
+P -> tu
 
 Pron -> io
 Pron -> tu

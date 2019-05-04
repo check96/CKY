@@ -9,12 +9,12 @@ import java.util.TreeMap;
 public class Translator {
 
 	private List<List<List<Tree>>> table = new ArrayList<List<List<Tree>>>();
-	private Map<String, String> italianGrammar = new TreeMap<String, String>();
+	private Map<String, List<Tree>> italianGrammar = new TreeMap<String, List<Tree>>();
 	private Map<String, String> yodaGrammar = new TreeMap<String, String>();
 
 	public Translator() {
-		yodaGrammar.putAll(Parser.parserGrammar("assets\\GrammaticaYoda.txt"));
-		italianGrammar.putAll(Parser.parserGrammar("assets\\GrammaticaItaliana.txt"));
+		yodaGrammar.putAll(Parser.parserYodaGrammar());
+		italianGrammar.putAll(Parser.parserItalianGrammar());
 	}
 
 	public String algorithm(String sentence) {
@@ -94,32 +94,29 @@ public class Translator {
 
 		for(int i =0; i<words.length; i++){
 			table.add(new ArrayList<List<Tree>>()); 
-			for(int j = 0; j<words.length; j++)
-				table.get(i).add(new ArrayList<Tree>());
+//			for(int j = 0; j<words.length; j++)
+//				table.get(i).add(new ArrayList<Tree>());
 		}
 		
 		// i = righe, j = colonne
 		for (int i = 0; i < words.length; i++) {
-
-			List<Tree> word = new ArrayList<Tree>();
-			word.add(new Tree(words[i]));
 			
-			table.get(i).get(i).add(new Tree(italianGrammar.get(words[i]), word));
+			table.get(i).add(italianGrammar.get(words[i]));
 
 			for (int j = i - 1; j >= 0; j--)
 				for (int k = j + 1; k <= i; k++) {
+					System.out.println(table.get(j).get(k-1));
+//					for(int n=0; n<table.get(j).get(k-1).size(); n++);
+//						for(int m=0; m<table.get(k).get(i).size(); m++){
+//							List<Tree> head = italianGrammar.get(table.get(j).get(k-1).get(n).getValue() + " " + table.get(k).get(i).get(m).getValue());
 					
-					for(int n=0; n<table.get(j).get(k-1).size(); n++)
-						for(int m=0; m<table.get(k).get(i).size(); m++){
-							String head = italianGrammar.get(table.get(j).get(k-1).get(n).getValue() + " " + table.get(k).get(i).get(m).getValue());
-					
-							if (head != null) {
-								List<Tree> children = new ArrayList<Tree>();
-								children.add(table.get(j).get(k-1).get(n));
-								children.add(table.get(k).get(i).get(m));
-								table.get(j).get(i).add(new Tree(head, children));
-							}
-						}
+//							if (head != null && !head.isEmpty()) {
+//								List<Tree> children = new ArrayList<Tree>();
+//								children.add(table.get(j).get(k-1).get(n));
+//								children.add(table.get(k).get(i).get(m));
+//								table.get(j).add(head);
+//							}
+//						}
 				}
 		}
 		
