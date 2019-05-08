@@ -25,31 +25,90 @@ public class Translator {
 		for (int n = 0; n < table[0][words.length - 1].size(); n++)
 			if (table[0][words.length - 1].getValue(n).equalsIgnoreCase("S")) {
 
-				System.out.println("ITALIANO");
-				table[0][words.length - 1].get(n).print("");
+//				System.out.println("ITALIANO");
+//				table[0][words.length - 1].get(n).print("");
 				List<Tree> trees = new ArrayList<Tree>();
 				for (int i = 0; i < table.length; i++) 
 					trees.add(table[i][i].get(0));
 				
-//				Tree tree = translate(table[0][words.length - 1].get(n));
-				Tree tree = translate(trees);
+				Tree tree = table[0][words.length - 1].get(n);
+				translate(tree);
+//				Tree tree = translate(trees);
 				
-				System.out.println("\nYODA");
-				tree.print("");
+//				System.out.println("\nYODA");
+//				tree.print("");
 				return tree.findLeaves();
 			}
 		return "";
 	}
 
-	public Tree translate(Tree tree) {
-		
-		Tree yodaTree = new Tree();
-		return yodaTree;
-	}
-	
-	public Tree translate(List<Tree> trees) {
 
-//		System.out.println(trees);
+	public void translate(Tree tree) {
+		
+		if(tree.getChildren().isEmpty())
+			return;
+		
+		// prima regola: se ho VP[V, x], tolgo x da VP e lo attacco al padre di VP
+		
+		Tree removed = null;
+		int pos = -1;
+		for(int i=0; i<tree.getChildren().size(); i++)
+			
+			if(tree.getValue(i).equalsIgnoreCase("VP")) {
+				removed = tree.getChildren().get(i).remove(1);
+				pos = i;
+			}
+		if(removed != null && pos != -1)
+			tree.addChildren(removed,pos+1);
+		
+		// seconda regola: se ho PRON VP, inserisco Pron in VP
+		
+		int index = -1;
+		for(int i=0; i<tree.getChildren().size()-1; i++)
+			if(tree.getValue(i).equalsIgnoreCase("Pron") && tree.getValue(i+1).equalsIgnoreCase("VP"))
+				index = i;
+	
+		if(index != -1)
+			tree.getChildren().get(index+1).addChildren(tree.remove(index),0);
+		
+		// terza regola: VP lo metto sempre alla fine dell'albero
+		Tree moved = null;
+		for(int i=0; i<tree.getChildren().size(); i++)
+			if(tree.getValue(i).equalsIgnoreCase("VP"))
+				moved = tree.remove(i);
+		
+		if(moved != null)
+			tree.addChildren(moved);
+		
+		
+		// quarta regola: se ho NP[x, ADV], tolgo ADV da NP e lo attacco al padre di NP
+		
+		Tree removedADV = null;
+		for(int i=0; i<tree.getChildren().size(); i++)
+			
+			if(tree.getValue(i).equalsIgnoreCase("NP") && tree.getChildren().get(i).getValue(1).equalsIgnoreCase("ADV")) {
+				removedADV = tree.getChildren().get(i).remove(1);
+			}
+		if(removedADV != null )
+			tree.addChildren(removedADV);
+		
+		
+		
+		
+		tree.print("");
+		System.out.println("\n");
+		
+		for (Tree child : tree.getChildren()) 
+			translate(child);
+		
+		
+		
+	}
+
+	
+	/*public Tree translate(List<Tree> trees) {
+
+		System.out.println(trees);
 		if (trees.get(0).getValue().equalsIgnoreCase("s"))
 			return trees.get(0);
 
@@ -97,8 +156,7 @@ public class Translator {
 		}
 		Collections.reverse(partial);
 		return translate(partial);
-	}
-
+	}*/
 	public void applyCKY(String[] words) {
 
 		table = new Cell[words.length][words.length];
@@ -148,9 +206,11 @@ public class Translator {
 
 		Translator translator = new Translator();
 
-		System.out.println(translator.algorithm("tu hai amici lì"));
-		System.out.println(translator.algorithm("noi siamo illuminati"));
-		System.out.println(translator.algorithm("tu avrai novecento anni di età"));
+		System.out.println(translator.algorithm("tu hai amici lì"));					//amici tu hai li
+	//	System.out.println(translator.algorithm("noi siamo illuminati"));				//illuminati noi siamo
+//		System.out.println(translator.algorithm("tu avrai novecento anni di età"));		//novecento anni di eta tu avrai
+		
+		//translator.printTable();
 	}
 
 }

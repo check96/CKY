@@ -29,6 +29,26 @@ public class Tree {
 		return children;
 	}
 	
+	public Tree remove(int i) {
+		return children.remove(i);
+	}
+	
+	public String getValue(int i) {
+		try {
+			return children.get(i).getValue();
+		} catch(Exception e) {
+			return "";
+		}
+	}
+	
+	public void addChildren(Tree tree) {
+		children.add(tree);
+	}
+	
+	public void addChildren(Tree tree, int i) {
+		children.add(i, tree);
+	}
+	
 	public void print(String space){
 		System.out.println(space + value);
 
@@ -51,4 +71,5 @@ public class Tree {
 		
 		return text;
 	}
+
 }
