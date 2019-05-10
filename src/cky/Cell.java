@@ -26,4 +26,8 @@ public class Cell {
 	public Tree get(int n) {
 		return trees.get(n);
 	}
+	
+	public void print(){
+		System.out.println(trees);
+	}
 }

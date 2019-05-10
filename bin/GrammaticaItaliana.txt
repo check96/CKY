@@ -4,28 +4,34 @@
 
 #frasi
 S -> NP VP
+S -> VP ADV
 S -> Pron VP
-S -> PropN VP
 S -> N VP
+S -> N V
 
 #sintagma nominale
-NP -> N ADV
 NP -> DET N
+NP -> NP PP
 NP -> DET NP
 NP -> N ADJ
 NP -> ADJ N
+NP -> Pron PP
 
 #sintagma verbale
 VP -> V NP
-VP -> VP PART
+VP -> VP PNom
+VP -> V ADV
 VP -> VP ADV
-VP -> V PART
-VP -> V PP
-VP -> VP PP
+VP -> V PNom
+VP -> V N
 VP -> Pron V
+VP -> Pron VP
+VP -> V ADJ
 
 #sintagma preposizionale
 PP -> P N
+PP -> P V
+PP -> P NP
 
 ##############
 #LEXICAL RULES
@@ -35,7 +41,12 @@ ADJ -> mio
 ADJ -> mia
 ADJ -> mie
 ADJ -> miei
+ADJ -> questo
+ADJ -> veloce
 
+ADV -> velocemente
+ADV -> ancora
+ADV -> dolcemente
 ADV -> lì
 ADV -> là
 
@@ -49,9 +60,14 @@ DET -> uno
 DET -> una
 DET -> un
 
+N -> solito
+N -> paolo
+N -> ragazzo
+N -> francesca
 N -> anni
 N -> amici
 N -> età
+N -> futuro
 
 P -> di
 P -> a
@@ -63,13 +79,11 @@ P -> per
 P -> tra
 P -> fra
 
-
-PART -> illuminati
-PART -> illuminato
-PART -> illuminata
-PART -> illuminate
-
-P -> tu
+PNom -> nebuloso
+PNom -> illuminati
+PNom -> illuminato
+PNom -> illuminata
+PNom -> illuminate
 
 Pron -> io
 Pron -> tu
@@ -78,8 +92,13 @@ Pron -> noi
 Pron -> voi
 Pron -> essi
 Pron -> esse
+Pron -> molto
 
+V -> corre
+V -> è
+V -> apprendere
 V -> avrai
+V -> ama
 V -> hai
 V -> siamo
 V -> sarai

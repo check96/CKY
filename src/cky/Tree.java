@@ -29,6 +29,11 @@ public class Tree {
 		return children;
 	}
 	
+	public Tree getChild(int i) {
+		return children.get(i);
+	}
+	
+	
 	public Tree remove(int i) {
 		return children.remove(i);
 	}
