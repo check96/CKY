@@ -27,6 +27,7 @@ public class Translator {
 					trees.add(table[i][i].get(0));
 				
 				Tree tree = table[0][words.length - 1].get(n);
+				tree.print("");
 				Tree translate = translate(tree);
 				
 				if(translate != null)
@@ -105,12 +106,12 @@ public class Translator {
 
 		Translator translator = new Translator();
 
-		System.out.println(translator.algorithm("tu hai amici lì"));					//amici tu hai li
-		System.out.println(translator.algorithm("noi siamo illuminati"));				//illuminati noi siamo
-		System.out.println(translator.algorithm("tu avrai novecento anni di età"));		//novecento anni di eta tu avrai
-		System.out.println(translator.algorithm("tu hai molto da apprendere ancora"));		//Molto da apprendere tu hai ancora
-		System.out.println(translator.algorithm("il futuro di questo ragazzo è nebuloso"));	//Nebuloso il futuro di questo ragazzo è
-		System.out.println(translator.algorithm("Paolo corre veloce"));				// Veloce Paolo corre
+		System.out.println(translator.algorithm("tu hai amici lì") + "\n");					//amici tu hai li
+		System.out.println(translator.algorithm("noi siamo illuminati") + "\n");				//illuminati noi siamo
+		System.out.println(translator.algorithm("tu avrai novecento anni di età") + "\n");		//novecento anni di eta tu avrai
+		System.out.println(translator.algorithm("tu hai molto da apprendere ancora") + "\n");		//Molto da apprendere tu hai ancora
+		System.out.println(translator.algorithm("il futuro di questo ragazzo è nebuloso") + "\n");	//Nebuloso il futuro di questo ragazzo è
+		System.out.println(translator.algorithm("Paolo corre veloce") + "\n");				// Veloce Paolo corre
 
 //		translator.printTable();
 	}

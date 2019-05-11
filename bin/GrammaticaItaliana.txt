@@ -4,29 +4,23 @@
 
 #frasi
 S -> NP VP
-S -> VP ADV
-S -> Pron VP
 S -> N VP
-S -> N V
+S -> Pron VP
 
 #sintagma nominale
 NP -> DET N
 NP -> NP PP
-NP -> DET NP
 NP -> N ADJ
 NP -> ADJ N
 NP -> Pron PP
 
 #sintagma verbale
 VP -> V NP
-VP -> VP PNom
-VP -> V ADV
-VP -> VP ADV
-VP -> V PNom
 VP -> V N
-VP -> Pron V
-VP -> Pron VP
+VP -> VP PNom
+VP -> V PNom
 VP -> V ADJ
+VP -> VP ADV
 
 #sintagma preposizionale
 PP -> P N
