@@ -50,9 +50,9 @@ ADV -> dolcemente
 ADV -> lì
 ADV -> là
 
-DET -> la
 DET -> il
 DET -> lo
+DET -> la
 DET -> i
 DET -> gli
 DET -> le
@@ -61,9 +61,9 @@ DET -> una
 DET -> un
 
 N -> solito
-N -> paolo
+N -> Paolo
 N -> ragazzo
-N -> francesca
+N -> Francesca
 N -> anni
 N -> amici
 N -> età

@@ -24,7 +24,11 @@ public class Cell {
 	}
 	
 	public Tree get(int n) {
-		return trees.get(n);
+		try{
+			return trees.get(n);
+		} catch(Exception e){
+			return null;
+		}
 	}
 	
 	public void print(){

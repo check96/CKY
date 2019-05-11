@@ -30,7 +30,7 @@ public class Translator {
 				Tree translate = translate(tree);
 				
 				if(translate != null)
-					tree.addChildren(translate, 0);
+					tree.addChild(translate, 0);
 				
 				return tree.findLeaves();
 			}
@@ -66,24 +66,23 @@ public class Translator {
 			List<Tree> word = new ArrayList<Tree>();
 			word.add(new Tree(words[i]));
 
-			List<String> possibleRules = italianGrammar.get(words[i]);
-			for (String rule : possibleRules) {
-				table[i][i].add(new Tree(rule, word));
-			}
+			List<String> possibleTags = italianGrammar.get(words[i]);
+			for (String tag : possibleTags)
+				table[i][i].add(new Tree(tag, word));
 
 			for (int j = i - 1; j >= 0; j--)
 				for (int k = j + 1; k <= i; k++) {
 
 					for (int n = 0; n < table[j][k-1].size(); n++)
 						for (int m = 0; m < table[k][i].size(); m++) {
-							List<String> rules = italianGrammar.get(table[j][k-1].getValue(n) + " "	+ table[k][i].getValue(m));
+							List<String> tags = italianGrammar.get(table[j][k-1].getValue(n) + " "	+ table[k][i].getValue(m));
 
-							if (rules != null) {
-								for (String rule : rules) {
+							if (tags != null) {
+								for (String tag : tags) {
 									List<Tree> children = new ArrayList<Tree>();
 									children.add(table[j][k-1].get(n));
 									children.add(table[k][i].get(m));
-									table[j][i].add(new Tree(rule, children));
+									table[j][i].add(new Tree(tag, children));
 								}
 							}
 						}

@@ -8,10 +8,6 @@ public class Tree {
 	private String value = "-";
 	private List<Tree> children = new ArrayList<Tree>();
 	
-	public Tree() {
-
-	}
-
 	public Tree(String value){
 		this.value = value;
 	}
@@ -23,6 +19,14 @@ public class Tree {
 	
 	public String getValue() {
 		return value;
+	}
+	
+	public String getValue(int i) {
+		try {
+			return children.get(i).getValue();
+		} catch(Exception e) {
+			return "-";
+		}
 	}
 	
 	public List<Tree> getChildren() {
@@ -38,19 +42,11 @@ public class Tree {
 		return children.remove(i);
 	}
 	
-	public String getValue(int i) {
-		try {
-			return children.get(i).getValue();
-		} catch(Exception e) {
-			return "";
-		}
-	}
-	
-	public void addChildren(Tree tree) {
+	public void addChild(Tree tree) {
 		children.add(tree);
 	}
 	
-	public void addChildren(Tree tree, int i) {
+	public void addChild(Tree tree, int i) {
 		children.add(i, tree);
 	}
 	
