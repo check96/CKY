@@ -21,13 +21,9 @@ public class Translator {
 //		printTable();
 		for (int n = 0; n < table[0][words.length - 1].size(); n++)
 			if (table[0][words.length - 1].getValue(n).equalsIgnoreCase("S")) {
-
-				List<Tree> trees = new ArrayList<Tree>();
-				for (int i = 0; i < table.length; i++) 
-					trees.add(table[i][i].get(0));
 				
 				Tree tree = table[0][words.length - 1].get(n);
-				tree.print("");
+//				tree.print("");
 				Tree translate = translate(tree);
 				
 				if(translate != null)
